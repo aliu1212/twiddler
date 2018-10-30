@@ -6,16 +6,11 @@
     <link rel='stylesheet' type='text/css' href='style.css'>
   </head>
   <body>
+  	<button onclick="loadNewTweets()">New Tweets!</button>
 
-    <header>Twiddler</header>
+    <div id="tweetBody"></div>
 
-    <button onclick="loadNewTweets()">New Tweets!</button>
-
-    <div class = "left" id="tweetBody"></div>
-
-    <div class = "right" id="userTweets">Click on a user handle to see their timeline!</div>
-
-    <script>
+  	<script>
 
       var displayedTweets = {};
 
@@ -28,9 +23,8 @@
           //if the new tweet doesn't exist in the object
           if (!displayedTweets[JSON.stringify(tweet)]) {
             var $tweet = $('<div></div>');
-            var $userHandle = $('<span>@' + tweet.user + '</span>');
-            $userHandle.click(displayUserTimeline(tweet.user));
-            $tweet.text(': ' + tweet.message + ' ' + tweet.created_at);
+            var $userHandle = $('<a href="user.html">@' + tweet.user + '</a>');
+            $tweet.text(': ' + tweet.message + tweet.created_at);
             $userHandle.prependTo($tweet);
             newBlock.push($tweet);
             displayedTweets[JSON.stringify(tweet)] = true;         
@@ -45,21 +39,6 @@
         });
       }
 
-
-      function displayUserTimeline(user) {
-        return function(event) {
-          var $userTweets = $('#userTweets');
-          $userTweets.html("");
-          streams.users[user].reverse().forEach(function(tweet) {
-            var $tweet = $('<div></div>');
-            var $userHandle = $('<span>@' + tweet.user + '</span>');
-            $tweet.text(': ' + tweet.message + ' ' + tweet.created_at);
-            $userHandle.prependTo($tweet);
-            $tweet.appendTo($userTweets);           
-          });
-        };
-      }
-
       function loadNewTweets(){
         generateTweets();
       }
@@ -70,10 +49,6 @@
       );
 
     </script>
-
-
   </body>
+
 </html>
-
-
-
